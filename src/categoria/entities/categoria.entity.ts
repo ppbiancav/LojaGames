@@ -1,19 +1,22 @@
-import { IsNotEmpty, isNotEmpty } from "class-validator";
-import { Produto } from "src/produto/entities/produto.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { IsNotEmpty } from "class-validator"
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Usuario } from "../../usuario/entities/usuario.entity"
+import { Produto } from "src/produto/entities/produto.entity"
 
 @Entity({name: "tb_categoria"})
 export class Categoria {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn()    
+    id: number
+
+    @IsNotEmpty()
+    @Column({length: 100, nullable: false})
+    titulo: string
     
-    @Column()
-    titulo: string;
+    @OneToMany(() => Produto, (produto) => produto.categoria, {
+        onDelete: "CASCADE"
+    })
+    produto: Produto
 
-    @OneToMany(()=> Produto, (produto)=> produto.categoria)
-    produto: Produto []
 
-
-    
 }
